@@ -2,14 +2,39 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 export default class Home extends React.Component {
-    render(){
+    
+  constructor(props){
+    super(props); 
+    this.state = {
+      followRequest: ["John","Janice","Ram","Jane"],
+      following: ["Aniket"]
+    };
+  }
+
+  doFollow = index => {
+     const {followRequest,following} = this.state;
+
+     const followNew = followRequest.splice(index,1);
+     following.push(followNew);
+
+     this.setState ({
+       followRequest,
+       following
+     });
+    };
+  
+  render(){
     return (
     <View style={styles.container}>
-      <Text>Hey Bro !! </Text>
+      <Text>You're following {this.state.following.length} friend </Text>
       <Button
         title= "Go to follow page"
         onPress = {()=>{
-            this.props.navigation.navigate("Follow")
+            this.props.navigation.navigate("Follow",{
+                followRequest: this.state.followRequest,
+                following: this.state.following,
+                doFollow: this.doFollow
+            });
         }}
       />
     </View>
